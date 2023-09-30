@@ -43,7 +43,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/welcome" element={<Welcome />} />
-          <Route path="register" element={<Register />} />
+          <Route path="register" element={<Register />} /> {/* register */}
           <Route path="/forget" element={<Forget />} />
           <Route path="/category/Ordinateur" element={<Pc />} />
           <Route path="/category/Lunette" element={<Lunette />} />
