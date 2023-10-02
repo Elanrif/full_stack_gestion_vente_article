@@ -1,28 +1,28 @@
-import React ,{useState,useEffect} from 'react'
-import Bar from './Bar';
-import { NavLink,Link ,useNavigate} from 'react-router-dom';
+import React, { useState, useEffect, useContext } from "react";
+import Bar from "./Bar";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { UserContext } from "../Context";
 
 function Login() {
+  const { userConnected, setUserConnected, userLoading, setUserLoading } =
+    useContext(UserContext);
 
-  const navigate = useNavigate() ; 
-   
-  const [login, setLogin] = useState(
-    {
-      email : "",
-      password : ""
-    }
-  );
+  const navigate = useNavigate();
 
+  const [login, setLogin] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleChange = (e) => {
     const target = e.target;
     const value = target.value;
     const name = target.name;
 
-     console.log(`${name} : `, value);
+    console.log(`${name} : `, value);
 
     setLogin((prevState) => ({
       ...prevState,
@@ -31,78 +31,73 @@ function Login() {
   };
 
   const handleSubmit = (e) => {
-   e.preventDefault() 
-  
-  login.email === "" || login.password === "" ? notify() : post_login_user();
+    e.preventDefault();
 
-   
+    login.email === "" || login.password === "" ? notify() : post_login_user();
   };
 
-  const post_login_user = () =>{
-   console.log("post_login_user : " , login )
+  const post_login_user = () => {
+    console.log("post_login_user : ", login);
     axios
-       .post("http://localhost:8080/users/login", login)
-       .then((response) => {
-        
+      .post("/user/login", login)
+      .then((response) => {
         //parfois si l'email est vrai et mot de passe faux,
-        //il trouve que response est vrai et essayer de le connecter 
+        //il trouve que response est vrai et essayer de le connecter
         //ce qui est faux, donc on évite çela
-        if(response.data) {
-             setLogin(response.data);
+        if (response.data) {
+          setLogin(response.data);
 
-             sessionStorage.setItem("auth", JSON.stringify(response.data));
+          sessionStorage.setItem("auth", JSON.stringify(response.data));
+          setUserConnected(response.data);
+          setUserLoading(true);
 
-             console.log("login: ", sessionStorage.getItem("auth"));
-
-             navigate("/welcome");
+          navigate("/welcome");
         }
 
-         console.log("n'existe pas ")
-         errorLogin();
-          setLogin((prevState) => ({
-            ...prevState,
-            password: "",
-            email: "",
-          }));
+        console.log("n'existe pas ");
+        errorLogin();
+        setLogin((prevState) => ({
+          ...prevState,
+          password: "",
+          email: "",
+        }));
+      })
+      .catch((error) => {
+        errorLogin();
+        console.log("error : ", error);
+        setLogin((prevState) => ({
+          ...prevState,
+          password: "",
+          email: "",
+        }));
+      });
+  };
 
-       })
-       .catch((error) => {
-         errorLogin();
-         console.log("error : " ,error);
-         setLogin((prevState)=>({
-          ...prevState ,
-          password : "",
-          email : ""
-         })) ;
-       });
-  }
+  const notify = () =>
+    toast.warn("Veuillez s'il vous plaît remplir tout les champs !", {
+      position: "top-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
 
- const notify = () =>
-   toast.warn("Veuillez s'il vous plaît remplir tout les champs !", {
-     position: "top-left",
-     autoClose: 3000,
-     hideProgressBar: false,
-     closeOnClick: true,
-     pauseOnHover: true,
-     draggable: true,
-     progress: undefined,
-     theme: "colored",
-   });
-
- const errorLogin = () =>
-   toast.error("Ooups il semble que vos information sont incorrect!", {
-     position: "top-left",
-     autoClose: 3000,
-     hideProgressBar: false,
-     closeOnClick: true,
-     pauseOnHover: true,
-     draggable: true,
-     progress: undefined,
-     theme: "colored",
-   });
+  const errorLogin = () =>
+    toast.error("Ooups il semble que vos information sont incorrect!", {
+      position: "top-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
 
   return (
-    
     <div className="">
       <Bar />
       <div className="mt-5 w-[500px] mx-auto  p-3">
@@ -164,16 +159,15 @@ function Login() {
                 className={`upperase hover:cursor-not-allowed hover:bg-slate-600
              font-mono bg-black px-10 py-2 uppercase text-lg text-white font-semibold
              ${
-               login.email === "" ||
-               login.password === ""
+               login.email === "" || login.password === ""
                  ? "hover:cursor-not-allowed"
                  : "hover:cursor-pointer"
-             }`}>
+             }`}
+              >
                 se connecter
               </button>
             </div>
           </form>
-
 
           <ToastContainer
             position="top-left"
@@ -200,4 +194,4 @@ function Login() {
   );
 }
 
-export default Login
+export default Login;

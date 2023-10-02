@@ -15,7 +15,7 @@ const SideBar = () => {
     { name: "dashboard", link: "/admin/dashboard", icon: MdOutlineDashboard },
     {
       name: "Utilisateurs",
-      link: "/admin/utilisateurs",
+      link: "/admin/users",
       icon: AiOutlineUser,
       margin: true,
     },

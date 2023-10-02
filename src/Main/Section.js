@@ -30,19 +30,8 @@ function Section({ itemes, name, articles }) {
         </p>
       </div>
 
-      <div className="p-4 max-w-[87rem] mx-auto bg-gray-100 ">
-        {/* <div className="flex text-black text-xl justify-center space-x-3 md:space-x-10">
-          {itemes.map((item, index) => (
-            <div
-              key={index}
-              className="hover:cursor-pointer hover:border-b-4 border-black"
-            >
-              {item}
-            </div>
-          ))}
-        </div> */}
-
-        {/* on va mapper , chaque article  */}
+      <div className="p-4 max-w-[87rem] mx-auto bg-slate-50 ">
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-10 gap-4 ps-24">
           {articles&& articles.map((item, index) => (
             <Card article={item} key={index}/>

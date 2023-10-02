@@ -6,9 +6,11 @@ import Sidebar from './SideBar';
 function Dashboard() {
   return (
     <div className="flex space-x-3 bg-slate-50">
-      <Sidebar />
-      <div className='ps-[20rem] max-w-6xl min-h-[100vh]'>
-        <Outlet className="border border-pink-300"/>
+      <div className='w-1/6'>
+        <Sidebar />
+      </div>
+      <div className="w-5/6 px-[4rem] mx-auto min-h-[88vh]">
+        <Outlet />
       </div>
     </div>
   );

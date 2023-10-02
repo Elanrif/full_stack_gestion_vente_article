@@ -1,11 +1,15 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,useContext} from "react";
 import Bar from "./Bar";
 import axios from "axios"
 import { NavLink,Link,useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { UserContext } from "../Context";
 
 function Register() {
+
+  const { userConnected, setUserConnected, userLoading, setUserLoading } = useContext(UserContext)
+
   const navigate = useNavigate();
 
   const [login, setLogin] = useState(
@@ -75,17 +79,17 @@ function Register() {
     console.log("User sending : ", user) ; 
 
     axios
-      .post("http://localhost:8080/users", {
+      .post("/user/register", {
         name: login.name,
         prenom: login.prenom,
         email: login.email,
         password: login.password,
       })
-      .then((response) => {
-        console.log("response : ", response);
-        sessionStorage.setItem("auth", JSON.stringify(response.data));
+      .then((res) => {
 
-        console.log("register: ", sessionStorage.getItem("auth"));
+        sessionStorage.setItem("auth", JSON.stringify(res.data));
+          setUserConnected(res.data);
+          setUserLoading(true);
 
         setLogin((prevState) => ({
           ...prevState,

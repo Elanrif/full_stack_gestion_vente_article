@@ -213,7 +213,7 @@ function Card({article}) {
       /></>
    
   return (
-    <div className="max-w[15rem] text-center rounded-2xl bg-white">
+    <div className="max-w[15rem] text-center rounded-2xl bg-slate-50 border h-[35rem]">
       {toastifies}
       <h1 className="mt-5 text-slate-800 text-xl font-black">{article.nom}</h1>
       <img
@@ -245,10 +245,10 @@ function Card({article}) {
       </div>
 
       <div
-        className={`mt-[5rem]  w-[12rem] mx-auto mb-10 rounded-xl p-3 ${
+        className={`mt-[3rem]  w-[12rem] mx-auto mb-7 rounded-xl p-3 ${
           userAuth
             ? onClik
-              ? "bg-cyan-700 hover:cursor-pointer"
+              ? "bg-black text-white hover:cursor-pointer"
               : " hover:cursor-pointer bg-black text-white hover:bg-blue-700"
             : "hover:cursor-not-allowed bg-slate-500 text-slate-300"
         }`}
