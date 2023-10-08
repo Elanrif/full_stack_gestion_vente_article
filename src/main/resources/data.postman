@@ -1,0 +1,4 @@
+NB: quand on a fait les cascades ; si on execute bien le SQL
+la synchronistion se passe bien aussi sur Spring boot les 2 entités sont synchronisés.
+je repète il faut passer : par SQL et non modifié directement sur la colonne Ça ne marche pas.
+d'ailleur j'avais fait ce dernièr par modification sur la colonne et la synchronistion n'avait pas marché.
