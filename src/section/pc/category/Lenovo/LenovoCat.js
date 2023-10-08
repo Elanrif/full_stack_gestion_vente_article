@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import ListWatch from "./ListWatch";
+import ListeLenovo from "./ListLenovo";
 import axios from "axios";
-import { ArticleContext } from "../../Context"; 
+import { ArticleContext } from "../../../../Context"; 
 
-export default function WatchCat() {
+function LenovoCat() {
+  
   const [articles, setArticles] = useState(null);
 
   useEffect(() => {
@@ -13,9 +14,12 @@ export default function WatchCat() {
 
   const displayArticle = () => {
     axios
-      .get(`/article/find-by-category/10`)
+      .get(`/article/find-by-category/3`)
       .then((res) => {
-        setArticles(res.data);
+        //filtrer par les articles que le reste de Carde est != 0
+        const filter = res.data.filter((item) => item.remaining !== 0)
+
+        setArticles(filter)
       })
       .catch((err) => {
         console.log("Err : ", err);
@@ -28,9 +32,11 @@ export default function WatchCat() {
       {articles && (
         <ArticleContext.Provider value={{ articles, setArticles }}>
           <Header />
-          <ListWatch />
+          <ListeLenovo />
         </ArticleContext.Provider>
       )}
     </>
   );
 }
+
+export default LenovoCat;

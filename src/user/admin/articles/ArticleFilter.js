@@ -27,27 +27,28 @@ export default function ArticleFilter(props) {
     setAnchorEl(null);
   };
 
-  const filterByFirstNameAsc = () => {
-    props.filterByFirstNameAsc();
+
+  const sortByNameAsc = () => {
+    props.sortByNameAsc();
 
     //fermer le pop
     handleClose();
   };
 
-  const filterByFirstNameDesc = () => {
-    props.filterByFirstNameDesc();
+  const sortByNameDesc = () => {
+    props.sortByNameDesc();
 
     handleClose();
   };
   
-  const filterByLastNameAsc = () => {
-    props.filterByLastNameAsc();
+  const sortByDateAsc = () => {
+    props.sortByDateAsc();
 
     handleClose();
   };
 
-   const filterByLastNameDesc = () => {
-     props.filterByLastNameDesc();
+   const sortByDateDesc = () => {
+     props.sortByDateDesc();
 
      handleClose();
    };
@@ -85,7 +86,7 @@ export default function ArticleFilter(props) {
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: 1.5,
             "& .MuiAvatar-root": {
-              width: 32,
+              width: 70,
               height: 32,
               ml: -0.5,
               mr: 1,
@@ -107,31 +108,31 @@ export default function ArticleFilter(props) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={filterByFirstNameAsc}>
-          <ArrowDropUpIcon /> &nbsp;Nom Acroissant
+        <MenuItem onClick={sortByNameAsc}>
+          <ArrowDropUpIcon /> &nbsp;nom
         </MenuItem>
-        <MenuItem onClick={filterByFirstNameDesc}>
+        <MenuItem onClick={sortByNameDesc}>
           <ArrowDropDownIcon className="rotate-90" />
-          &nbsp; Nom Descroissant
+          &nbsp; nom
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
           <FilterListIcon>
             <PersonAdd fontSize="small" />
           </FilterListIcon>
-          &nbsp; &nbsp; Autre filtre
+          &nbsp; &nbsp; Trier par...
         </MenuItem>
-        <MenuItem onClick={filterByLastNameAsc}>
+        <MenuItem onClick={sortByDateAsc}>
           <ArrowDropUpIcon>
             <Settings fontSize="small" />
           </ArrowDropUpIcon>
-          &nbsp; Prenom Acroissant
+          &nbsp; date
         </MenuItem>
-        <MenuItem onClick={filterByLastNameDesc}>
+        <MenuItem onClick={sortByDateDesc}>
           <ArrowDropDownIcon>
             <Logout fontSize="small" />
           </ArrowDropDownIcon>
-          &nbsp;Prenom Descroissant
+          &nbsp;date
         </MenuItem>
       </Menu>
     </React.Fragment>

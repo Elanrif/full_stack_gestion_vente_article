@@ -9,14 +9,51 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { HiUserPlus } from "react-icons/hi2";
 import { GrUserAdmin } from "react-icons/gr";
-import { Link,useNavigate } from 'react-router-dom';
+import {NavLink, Link,useNavigate } from 'react-router-dom';
+import BackDrop from '../section/BackDrop';
+import Badge from "@mui/material/Badge";
+import { styled } from "@mui/material/styles";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { ArticleUserContext ,BasketUserContext, UserContext } from '../Context';
+
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: -3,
+    top: -2,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}));
+
+ function IconChart() {
+
+  const navigate = useNavigate() 
+  const { userConnected, setUserConnected, userLoading, setUserLoading } = useContext(UserContext)
+  const { articleAuth, setArticleAuth } = useContext(ArticleUserContext)
+  const { allBasketUser , setAllBasketUser } = useContext(BasketUserContext)
+
+  /* ? pour éviter d'avoir des erreurs dans le cas ou allBasketUser n'existe pas , car on l'a initialisé à null dans APP.js */
+  const basket_count = allBasketUser?.reduce(
+    (acc, basket) => acc + basket.qte_article, 0
+  )
+  console.log("allBasketUser : ")
+
+  return (
+    <IconButton aria-label="cart" onClick={() => navigate("/mon-panier")}>
+      <StyledBadge badgeContent={basket_count} color="secondary">
+        <ShoppingCartIcon />
+      </StyledBadge>
+    </IconButton>
+  );
+}
 
  function AccountMenu() {
+
+  const { userConnected, setUserConnected, userLoading, setUserLoading } = useContext(UserContext) 
 
   const navigate = useNavigate() 
 
@@ -28,11 +65,13 @@ import { Link,useNavigate } from 'react-router-dom';
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        <Typography sx={{ minWidth: 100 }}>Contact</Typography>
-        <Typography sx={{ minWidth: 100 }}>Profile</Typography>
+        <Typography sx={{ minWidth: 100 }}>
+          <IconChart/>
+          </Typography>
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}
@@ -81,31 +120,43 @@ import { Link,useNavigate } from 'react-router-dom';
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Admin
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Mon compte
-        </MenuItem>
+        {(userLoading && userConnected) && (
+          <> {console.log(" auth : " , userConnected)}
+            {userConnected.admin && (
+              <MenuItem onClick={()=> {navigate("/dashboard/admin"); handleClose();}}>
+                <Avatar /> Admin
+              </MenuItem>
+            )}
+            <MenuItem onClick={()=> {navigate("/user"); handleClose()}}>
+              <Avatar /> Mon compte
+            </MenuItem>
+          </>
+        )}
         <Divider />
-        <MenuItem  onClick={()=> navigate("/register")}>
-          <ListItemIcon>
-            <HiUserPlus size="24px" />
-          </ListItemIcon>
-          S'inscrire
-        </MenuItem>
-        <MenuItem  onClick={()=> navigate("/login")}>
-          <ListItemIcon>
-            <GrUserAdmin size="24px" />
-          </ListItemIcon>
-          Se connecter
-        </MenuItem>
-        <MenuItem  onClick={()=> navigate("/logout")}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Déconnecter
-        </MenuItem>
+        {userLoading === false && (
+          <>
+            <MenuItem onClick={() => navigate("/register")}>
+              <ListItemIcon>
+                <HiUserPlus size="24px" />
+              </ListItemIcon>
+              S'inscrire
+            </MenuItem>
+            <MenuItem onClick={() => navigate("/login")}>
+              <ListItemIcon>
+                <GrUserAdmin size="24px" />
+              </ListItemIcon>
+              Se connecter
+            </MenuItem>
+          </>
+        )}
+        {userLoading && (
+          <MenuItem onClick={()=>navigate("/logout")}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Déconnecter
+          </MenuItem>
+        )}
       </Menu>
     </React.Fragment>
   );
@@ -144,13 +195,25 @@ function Header() {
 
   return (
     <div className="sticky top-0 z-10 text-xs font-semibold py-5 bg-gray-50 text-slate-800 flex space-x-7 items-center justify-center">
-      <Link to = "/">
+      <Link to="/">
         <FcCdLogo size="25px" />
       </Link>
 
       {category.map((item, index) => (
         <React.Fragment key={index}>
-          <Link to={`${item.lien}`}>{item.nom}</Link>
+          <NavLink
+            className={({ isActive, isPending }) =>
+              isPending
+                ? console.log(" link is pending")
+                : isActive
+                ? " text-blue-500"
+                : " "
+            }
+            to={`${item.lien}`}
+            key={index}
+          >
+            {item.nom}
+          </NavLink>
         </React.Fragment>
       ))}
       <AccountMenu />

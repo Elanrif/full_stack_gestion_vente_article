@@ -16,6 +16,7 @@ import axios from "axios";
 import UserFilter from "./UserFilter";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { UserContext } from "../../../Context";
+import { BsPencilFill } from "react-icons/bs";
 
 const BootstrapTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -32,10 +33,9 @@ sinon ça ne marchera pas. */
 const columns = [
   { id: "key", label: "#", minWidth: null },
   { id: "image", label: "Image", minWidth: 10 },
-  { id: "apogee", label: "Num Apogée", minWidth: 10 },
   { id: "name", label: "Nom", minWidth: null },
   { id: "lastName", label: "Prenom", minWidth: null },
-  { id: "role", label: "Role", minWidth: null },
+  { id: "phone", label: "Tél", minWidth: 10 },
   { id: "email", label: "Email", minWidth: null },
   { id: "option", label: "OPTION", minWidth: null },
   /*   { id: "update", label: "", minWidth: null },
@@ -55,9 +55,9 @@ const opt = (e) => (
       <Link to={`/dashboard/admin/user/update/${e.id}`}>
         <BootstrapTooltip title="Modifier">
           <div className="group w-[3rem] flex items-center justify-center">
-            <RxUpdate
+            <BsPencilFill
               size="1.3rem"
-              className="text-blue-700 group-hover:text-cyan-500 duration-300"
+              className="text-black group-hover:text-cyan-500 duration-300"
             />
           </div>
         </BootstrapTooltip>
@@ -77,8 +77,8 @@ const opt = (e) => (
   </div>
 );
 
-function createData(key, apogee, image, name, lastName, role, email, option) {
-  return { key, apogee, image, name, lastName, role, email, option };
+function createData(key, image, name, lastName, phone, email, option) {
+  return { key, image, name, lastName, phone, email, option };
 }
 
 export default function Users() {
@@ -107,7 +107,7 @@ export default function Users() {
 
   const displayUsers = () => {
     axios
-      .get("http://localhost:8080/user/find/all")
+      .get("/user/find-all")
       .then((response) => {
         const filteredUsers = response.data.filter(
           (user) => user.id !== userConnected.id
@@ -119,14 +119,13 @@ export default function Users() {
       });
   };
 
-  const rows = users.map((item, index) =>
+  const rows = users.sort((a,b)=>b.id-a.id).map((item, index) =>
     createData(
       index + 1,
-      item.apogee,
       item.image,
       item.firstName,
       item.lastName,
-      item.role,
+      item.phone,
       item.email,
       opt(item)
     )
@@ -142,7 +141,7 @@ export default function Users() {
 
     axios
       .get(
-        "http://localhost:8080/user/findByFirstNameContainingOrLastNameContaining",
+        "/user/findByFirstNameContainingOrLastNameContaining",
         {
           params: {
             name: `${value}`,

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
-    <div className="relative h-[70vh] bg-black text-white">
+    <div className="group relative h-[70vh] bg-black text-white">
       <div className="text-center pt-10 text-slate-50">
         <p className="text-blue-500 "> nouveau </p>
         <h1 className="text-6xl font-semibold"> Accessoire</h1>
@@ -15,14 +15,14 @@ export default function Header() {
           >
             Retour &gt;{" "}
           </Link>
-          <Link className="text-blue-400 hover:text-blue-600 duration-300 capitalize">
+          <Link className="text-white bg-black max-w-[25rem] duration-300 capitalize">
             {" "}
             Acheter &gt;
           </Link>
         </div>
       </div>
       <div className="mx-auto mt-5 h-[15rem] w-[40rem]">
-        <div className="">
+        <div className="group-hover:scale-110  duration-300">
           <img
             src="/image/img/Accesoire/chargeur.jpg"
             alt="Aucune image"

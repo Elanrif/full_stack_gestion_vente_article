@@ -1,14 +1,14 @@
 import React from 'react'
 import Header from './Header'
-import ListAsus from './ListAsus'
+import Section from './Section'
 
-function Asus_cat() {
+function Basket() {
   return (
     <div>
       <Header/>
-      <ListAsus/>
+      <Section/>
     </div>
   )
 }
 
-export default Asus_cat
+export default Basket

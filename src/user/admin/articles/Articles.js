@@ -16,6 +16,7 @@ import axios from "axios";
 import ArticleFilter from "./ArticleFilter";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { UserContext } from "../../../Context";
+import ArticleByCat from "./ArticleByCat";
 
 const BootstrapTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -32,11 +33,11 @@ sinon ça ne marchera pas. */
 const columns = [
   { id: "key", label: "#", minWidth: null },
   { id: "image", label: "Image", minWidth: 10 },
-  { id: "apogee", label: "Num Apogée", minWidth: 10 },
-  { id: "name", label: "Nom", minWidth: null },
-  { id: "lastName", label: "Prenom", minWidth: null },
-  { id: "role", label: "Role", minWidth: null },
-  { id: "email", label: "Email", minWidth: null },
+  { id: "name", label: "Nom article", minWidth: 10 },
+  { id: "prix", label: "prix", minWidth: null },
+  { id: "total", label: "Quantité", minWidth: null },
+  { id: "remaining", label: "Qte Rest", minWidth: null },
+  { id: "date", label: "date", minWidth: null },
   { id: "option", label: "OPTION", minWidth: null },
   /*   { id: "update", label: "", minWidth: null },
   { id: "view", label: "", minWidth: null }, */
@@ -77,14 +78,16 @@ const opt = (e) => (
   </div>
 );
 
-function createData(key, apogee, image, name, lastName, role, email, option) {
-  return { key, apogee, image, name, lastName, role, email, option };
+function createData(key, image,name, prix, total, remaining, date, option) {
+  return { key, image,name, prix, total, remaining, date,  option };
 }
 
 export default function Articles() {
+
   const { userConnected } = useContext(UserContext);
 
-  const [users, setUsers] = React.useState([]);
+  const [articles, setArticles] = React.useState([]);
+  const [categories,setCategories] = React.useState([]) ;
   const [search, setSearch] = useState({
     response: "",
   });
@@ -102,35 +105,60 @@ export default function Articles() {
   };
 
   React.useEffect(() => {
-    displayUsers();
+    findAllArticles()
+    findAllCategories()
   }, []);
 
-  const displayUsers = () => {
+  const findAllArticles = () => {
     axios
-      .get("http://localhost:8080/user/find/all")
+      .get("/article/find-all")
       .then((response) => {
-        const filteredUsers = response.data.filter(
-          (user) => user.id !== userConnected.id
-        );
-        setUsers(filteredUsers);
+        setArticles(response.data);
       })
       .catch((error) => {
         console.log("error : ", error);
       });
   };
 
-  const rows = users.map((item, index) =>
-    createData(
-      index + 1,
-      item.apogee,
-      item.image,
-      item.firstName,
-      item.lastName,
-      item.role,
-      item.email,
-      opt(item)
-    )
-  );
+    /* filter ceux qui ont des articles.  */
+     const findAllCategories = () => {
+       axios
+         .get("/category/find-all")
+         .then((response) => {
+           // on va filter par ceux qui ont des events
+
+           const filteredData = response.data.filter(
+             (item) => item.articles.length > 0
+           );
+           // .length , car !=null , est faux : null # [] (tableau  vide.)
+
+           setCategories(filteredData);
+           console.log(" FILTER category : ", filteredData);
+         })
+         .catch((error) => {
+           console.log(error);
+         });
+     };
+
+     /*à chaque fois on va cliquer sur ArticleByCat une categorie, on va retourner une liste d'article par category */
+     const handleDisplayArticles = (category) => {
+       setArticles(category.articles);
+     };
+
+  const rows = articles
+    /* .sort((a, b) => b.id - a.id) ; pour éviter qu'après le filtre il fait le triage à cause de ça on verra pas nos filtre */
+    .map((item, index) =>
+      createData(
+        index + 1,
+        item.image,
+        item.name.slice(0, 60),
+        item.prix,
+        item.total,
+        item.remaining,
+        item.date,
+        opt(item)
+      )
+    );
 
   const handlChange = (e) => {
     const { name, value } = e.target;
@@ -141,65 +169,64 @@ export default function Articles() {
     }));
 
     axios
-      .get(
-        "http://localhost:8080/user/findByFirstNameContainingOrLastNameContaining",
-        {
-          params: {
-            name: `${value}`,
-          },
-        }
-      )
+      .get("/article/findByNameContainingOrDescpContaining", {
+        params: {
+          name: `${value}`,
+        },
+      })
       .then((response) => {
-        setUsers(response.data);
+        setArticles(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const filterFirstNameAsc = () => {
+  const sortByDateAsc = () => {
     axios
-      .get("http://localhost:8080/user/findAllByOrderByFirstNameAsc")
-      .then((response) => {
-        setUsers(response.data);
+    .get("/article/findAllByOrderByDateAsc")
+    .then((response) => {
+      setArticles(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const filterFirstNameDesc = () => {
+  const sortByDateDesc = () => {
     axios
-      .get("http://localhost:8080/user/findAllByOrderByFirstNameDesc")
-      .then((response) => {
-        setUsers(response.data);
+    .get("/article/findAllByOrderByDateDesc")
+    .then((response) => {
+      setArticles(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const filterLastNameAsc = () => {
+  const sortByNameAsc = () => {
     axios
-      .get("http://localhost:8080/user/findAllByOrderByLastNameAsc")
-      .then((response) => {
-        setUsers(response.data);
+    .get("/article/findAllByOrderByNameAsc")
+    .then((response) => {
+      setArticles(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const filterLastNameDesc = () => {
+  const sortByNameDesc = () => {
     axios
-      .get("http://localhost:8080/user/findAllByOrderByLastNameDesc")
-      .then((response) => {
-        setUsers(response.data);
+    .get("/article/findAllByOrderByNameDesc")
+    .then((response) => {
+      setArticles(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+
 
   return (
     <div>
@@ -218,12 +245,17 @@ export default function Articles() {
           </Link>
         </div>
 
-        <div>
+        <div className="flex items-center space-x-1">
           <ArticleFilter
-            filterByFirstNameAsc={filterFirstNameAsc}
-            filterByFirstNameDesc={filterFirstNameDesc}
-            filterByLastNameAsc={filterLastNameAsc}
-            filterByLastNameDesc={filterLastNameDesc}
+            sortByDateAsc={sortByDateAsc}
+            sortByDateDesc={sortByDateDesc}
+            sortByNameAsc={sortByNameAsc}
+            sortByNameDesc={sortByNameDesc}
+          />
+          <ArticleByCat
+            categories={categories && categories} /* liste des categories filter qui ont des articles va être passé comme params a handleDisplayArticles */
+            articles={handleDisplayArticles} /* retourne une article selon la category,il prendra un paramètre category */
+            display={findAllArticles} /* tout les articles , pour le boutton Reset sur ArticleByCat */
           />
         </div>
 
@@ -232,8 +264,8 @@ export default function Articles() {
             {" "}
             <SearchRoundedIcon className="absolute group-hover:text-blue-500 duration-300 text-slate-500 top-3 left-3" />
             <input
-              className="w-[20rem] ps-12 capitalize bg-slate-50 focus:bg-white border ring-offset-blue-400 px-3 py-2 rounded-xl focus:ring-1 ring-offset-1 focus:outline-none duration-300"
-              placeholder="rechercher par nom ou prenom..."
+              className="w-[20rem] ps-12  bg-slate-50 focus:bg-white border ring-offset-blue-400 px-3 py-2 rounded-xl focus:ring-1 ring-offset-1 focus:outline-none duration-300"
+              placeholder="Rechercher par Nom/Description..."
               value={search.data}
               name="response"
               onChange={handlChange}

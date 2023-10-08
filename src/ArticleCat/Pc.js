@@ -30,7 +30,7 @@ function Pc() {
  const datas = () => {
   
    axios
-     .get("http://localhost:8080/articles/AllNotSellByCateogry/3")
+     .get("/articles/AllNotSellByCateogry/3")
      .then((response) => {
        console.log("ORDINATEUR : ", response.data);
        setData(response.data);

@@ -11,16 +11,16 @@ import { HiOutlineLogout } from "react-icons/hi";
 
 const SideBar = () => {
   const menus = [
-    { name: "Gestion de Vente", link: "/items", icon: AiOutlineHome },
-    { name: "dashboard", link: "/admin/dashboard", icon: MdOutlineDashboard },
+    { name: "Page d'accueuil", link: "/", icon: AiOutlineHome },
+    { name: "Tableau de bord", link: "/dashboard/admin/acceuil", icon: MdOutlineDashboard },
     {
       name: "Utilisateurs",
-      link: "/admin/users",
+      link: "/dashboard/admin/users",
       icon: AiOutlineUser,
       margin: true,
     },
-    { name: "Articles", link: "/admin/articles", icon: FiFolder },
-    { name: "Commandes", link: "/admin/orders", icon: FiShoppingCart },
+    { name: "Articles", link: "/dashboard/admin/articles", icon: FiFolder },
+    { name: "Commandes", link: "/dashboard/admin/orders", icon: FiShoppingCart },
     { name: "Commentaire", link: "/comment", icon: AiOutlineHeart, margin: true },
     { name: "Déconnexion", link: "/logout", icon: HiOutlineLogout },
   ];

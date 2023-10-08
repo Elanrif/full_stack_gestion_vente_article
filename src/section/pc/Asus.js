@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Asus() {
   return (
-    <div className="relative h-[70vh] bg-slate-50">
+    <div className="group relative h-[70vh] bg-slate-50">
       <div className="text-center pt-10">
         <p className="text-blue-500 "> nouveau </p>
         <h1 className="text-6xl font-semibold"> Asus Air Pro.</h1>
@@ -22,7 +22,7 @@ export default function Asus() {
         </div>
       </div>
       <div className="mx-auto mt-5 h-[15rem] w-[40rem]">
-        <div className="">
+        <div className="group-hover:scale-75 duration-300">
           <img
             src="/image/img/pc/viVoBook.png"
             alt="Aucune image"

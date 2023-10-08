@@ -14,10 +14,11 @@ function Register() {
 
   const [login, setLogin] = useState(
     {
-      name : "",
-      prenom : "",
+      firstName : "",
+      lastName : "",
       email : "",
       password : "",
+      phone : "",
       password_confirm : ""
     }
   );
@@ -31,7 +32,6 @@ function Register() {
     const value = target.value;
     const name = target.name ;
 
-    console.log(`${name} : `, value);
 
     setLogin((prevState) => ({
       ...prevState,
@@ -43,9 +43,6 @@ function Register() {
 
     e.preventDefault()
 
-    console.log("Login User  : ", login ) ;
-
-    
     if(login.password != login.password_confirm)
     {
      error_password();
@@ -58,7 +55,7 @@ function Register() {
     }
     else {
 
-      login.name === "" || login.prenom === "" || login.email === "" || login.password ==="" ? notify() : postUser()
+      login.firstName === "" || login.lastName === "" || login.email === "" || login.password ==="" || login.phone === "" ? notify() : postUser()
     }
   
    
@@ -69,34 +66,35 @@ function Register() {
     
    
     setUser({
-      name : login.name  ,
-      prenom : login.prenom,
+      firstName : login.firstName  ,
+      lastName : login.lastName,
       email : login.email,
+      phone : login.phone,
       password : login.password
     })
 
-    console.log( "DATA : " , login)
-    console.log("User sending : ", user) ; 
 
     axios
       .post("/user/register", {
-        name: login.name,
-        prenom: login.prenom,
+        firstName: login.firstName,
+        lastName: login.lastName,
         email: login.email,
         password: login.password,
+        phone: login.phone
       })
       .then((res) => {
 
-        sessionStorage.setItem("auth", JSON.stringify(res.data));
+          sessionStorage.setItem("auth", JSON.stringify(res.data));
           setUserConnected(res.data);
           setUserLoading(true);
 
-        setLogin((prevState) => ({
+          setLogin((prevState) => ({
           ...prevState,
-          name: "",
-          prenom: "",
+          firstName: "",
+          lastName: "",
           email: "",
           password: "",
+          phone: "",
           password_confirm: "",
         }));
 
@@ -107,9 +105,10 @@ function Register() {
         notifyError();
         setLogin((prevState) => ({
           ...prevState,
-          name: "",
-          prenom: "",
+          firstName: "",
+          lastName: "",
           email: "",
+          phone : "",
           password: "",
           password_confirm: "",
         }));
@@ -159,21 +158,21 @@ function Register() {
       <Bar />
       <div className="mt-5 w-[500px] mx-auto  p-3">
         <div>
-          <h1 className="uppercase font-mono font-semibond text-2xl font-bold">
+          <h1 className="uppercase mb-4 font-mono font-semibond text-2xl font-bold">
             créer un compte
           </h1>
-          <p className="my-10">
+          {/* <p className="my-10">
             Créez un compte pour libérer tous les privilèges offerts par The
             Ones. Si vous vous inscrivez pour la première fois, vous pouvez
             demander un cadeau de bienvenue exclusif.
-          </p>
+          </p> */}
 
           <form method="post" onSubmit={handleSubmit}>
             <div className="relative">
               <input
                 onChange={handleChange}
                 id="name"
-                name="name"
+                name="firstName"
                 type="text"
                 className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-rose-600"
                 placeholder="john@doe.com"
@@ -182,7 +181,6 @@ function Register() {
               <label
                 htmlFor="name"
                 className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                
               >
                 Nom*
               </label>
@@ -192,11 +190,11 @@ function Register() {
               <input
                 onChange={handleChange}
                 id="prenom"
-                name="prenom"
+                name="lastName"
                 type="text"
                 className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-rose-600"
                 placeholder="john@doe.com"
-                value = {login.prenom}
+                value={login.prenom}
               />
               <label
                 htmlFor="prenom"
@@ -222,6 +220,24 @@ function Register() {
                 className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
               >
                 Address email
+              </label>
+            </div>
+
+            <div className="mt-10 relative">
+              <input
+                onChange={handleChange}
+                id="phone"
+                name="phone"
+                type="text"
+                className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-rose-600"
+                placeholder="john@doe.com"
+                value={login.prenom}
+              />
+              <label
+                htmlFor="phone"
+                className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+              >
+                Num Téléphone
               </label>
             </div>
 
@@ -304,7 +320,6 @@ function Register() {
             pauseOnHover
             theme="colored"
           /> */}
-        
 
           <div className="text-center mt-5 hover:cursor-pointer hover:text-blue-500">
             <Link to="/login">

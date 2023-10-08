@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Mac() {
   return (
-    <div className="relative h-[70vh] bg-black text-white">
+    <div className="group relative h-[70vh] bg-black text-white">
       <div className="text-center pt-10 text-slate-50">
         <p className="text-blue-500 "> nouveau </p>
         <h1 className="text-6xl font-semibold"> MacBook Air Pro.</h1>
@@ -19,7 +19,7 @@ export default function Mac() {
         </div>
       </div>
       <div className="mx-auto mt-5 h-[15rem] w-[40rem]">
-        <div className="">
+        <div className="group-hover:animate-pulse duration-300">
           <img
             src="/image/img/pc/macBookAir.jpg"
             alt="Aucune image"

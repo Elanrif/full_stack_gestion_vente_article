@@ -37,7 +37,6 @@ function Login() {
   };
 
   const post_login_user = () => {
-    console.log("post_login_user : ", login);
     axios
       .post("/user/login", login)
       .then((response) => {
@@ -51,7 +50,7 @@ function Login() {
           setUserConnected(response.data);
           setUserLoading(true);
 
-          navigate("/welcome");
+          navigate("/");
         }
 
         console.log("n'existe pas ");

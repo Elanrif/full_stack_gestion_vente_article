@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
-    <div className="relative h-[70vh] bg-black text-white">
-      <div className="text-center pt-10 text-slate-50">
+    <div className="group relative h-[70vh] bg-black text-white">
+      <div className="text-center z-20 pt-10 text-slate-50">
         <p className="text-blue-500 "> nouveau </p>
         <h1 className="text-6xl font-semibold"> Iphone 15</h1>
         <p className="pt-3">Titanium. Extrêmement durable. Top lumineux</p>
@@ -21,8 +21,8 @@ export default function Header() {
           </Link>
         </div>
       </div>
-      <div className="mx-auto mt-5 h-[15rem] w-[40rem]">
-        <div className="">
+      <div className="mx-auto z-10 mt-5 h-[15rem] w-[40rem]">
+        <div className="group-hover:scale-110  duration-300">
           <img
             src="/image/img/phone/iphone/iphonemany.png"
             className="h-[15rem] w-[80rem]"

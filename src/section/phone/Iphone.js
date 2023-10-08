@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Iphone() {
   return (
-    <div className="relative h-[75vh] bg-white">
+    <div className="group relative h-[75vh] bg-white">
       <div className="text-center pt-10">
         <p className="text-blue-500 "> nouveau </p>
         <h1 className="text-6xl font-semibold"> Iphone 15 Pro.</h1>
@@ -22,7 +22,7 @@ export default function Iphone() {
         </div>
       </div>
       <div className="mx-auto mt-5 h-[15rem] w-[40rem]">
-        <div className="">
+        <div className="group-hover:scale-75 duration-300">
           <img
             src="/image/img/phone/iphone/iphoneMa.png"
             alt="Aucune image"
