@@ -49,28 +49,9 @@ function App() {
   const auth = sessionStorage.getItem("auth")
     ? JSON.parse(sessionStorage.getItem("auth"))
     : null;
-  /* :{} ,  Si auth est initialisé avec un objet vide {} au lieu de null, alors authBool sera toujours true.
-
-Cela est dû au fonctionnement des valeurs truthy et falsy en JavaScript. Un objet vide {} est une valeur "truthy" en JavaScript, ce qui signifie qu'il est considéré comme "vrai" dans un contexte booléen.
-
-Voici un peu de clarté :
-
-En JavaScript, les valeurs suivantes sont considérées comme "falsy":
-
-false
-0
-'' (chaîne de caractères vide)
-null
-undefined
-NaN
-Tout le reste est considéré comme "truthy", ce qui signifie que même un objet vide {} est évalué comme "vrai" dans un contexte booléen.
-
-Donc, si auth est initialisé avec {}, l'expression auth ? true : false évalue toujours à true parce que {} est une valeur truthy. */
 
   const authBool = auth ? true : false;
 
-  //Pour chaque Context { UserContext, BasketUserContext, ArticleUserContext }, on utilise un state
-  /* pour chaque .Provier envoyer le state et son setState*/
   const [userConnected, setUserConnected] = useState(auth);
   const [userLoading, setUserLoading] = useState(authBool);
 
@@ -81,6 +62,7 @@ Donc, si auth est initialisé avec {}, l'expression auth ? true : false évalue 
   const items = ["Téléphone", "Lunette", "Ordinateur", "Tablette"];
 
   useEffect(() => {
+
     authBool && loadUserFromBDD();
 
     authBool && loadArticleUserConnected();
@@ -176,8 +158,8 @@ Donc, si auth est initialisé avec {}, l'expression auth ? true : false évalue 
                 {userLoading && (
                   <Route path="mon-panier" element={<Basket />} />
                 )}
-                <Route path="login" element={<Login />} />
                 <Route path="logout" element={<Logout />} />
+                <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route path="forget" element={<Forget />} />
               </Route>

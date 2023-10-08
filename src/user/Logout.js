@@ -9,7 +9,7 @@ function Logout() {
 
   const { userConnected, setUserConnected, userLoading, setUserLoading } =  useContext(UserContext);
 
-    const [allBasketUser, setAllBasketUser] = useContext(BasketUserContext);
+  const {allBasketUser, setAllBasketUser} = useContext(BasketUserContext);
 
   const navigate = useNavigate();
 
@@ -39,11 +39,11 @@ function Logout() {
         <><Bar />
         <div className="mt-5 w-[500px] mx-auto  p-3">
           <div className="mt-[5rem]">
-            <h2 className="text-4xl text-center font-black my-5">Vous allez être déconnecté dans quelque seconde...</h2>
-            <h1 className="my-4 text-center text-slate-800">
+            <h2 className="text-3xl text-center font-thin my-5">Vous allez être déconnecté dans quelque seconde...</h2>
+            <h1 className="my-4 font-extralight text-center text-slate-800">
               Nous sommes triste de vous voir partir !
             </h1>
-            <p className="my-10 text-lg   text-center text-blue-700">
+            <p className="my-10 text-lg font-extralight text-center text-blue-700">
               On espère vous revoir le plutôt possible 
             </p>
           
@@ -52,10 +52,12 @@ function Logout() {
         <BackDrop />
         </>
         :
-        <>{/* else not connected */}
+        <> 
             {navigate("/login")}
+            <div className="text-center mt-[12rem] ">VEUILLEZ VOUS CONNECTEZ ! </div>
             <BackDrop/>
-        </>}
+        </>
+        }
       </div>
     );
   
