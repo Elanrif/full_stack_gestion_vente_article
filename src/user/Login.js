@@ -7,8 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../Context";
 
 function Login() {
-  const { userConnected, setUserConnected, userLoading, setUserLoading } =
-    useContext(UserContext);
+  const { userConnected, setUserConnected, userLoading, setUserLoading } =   useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -40,10 +39,9 @@ function Login() {
     axios
       .post("/user/login", login)
       .then((response) => {
-        //parfois si l'email est vrai et mot de passe faux,
-        //il trouve que response est vrai et essayer de le connecter
-        //ce qui est faux, donc on évite çela
+
         if (response.data) {
+          
           setLogin(response.data);
 
           sessionStorage.setItem("auth", JSON.stringify(response.data));

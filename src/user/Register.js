@@ -28,6 +28,7 @@ function Register() {
   useEffect(() => {}, []);
 
   const handleChange = (e) => {
+
     const target = e.target;
     const value = target.value;
     const name = target.name ;
@@ -84,10 +85,11 @@ function Register() {
       })
       .then((res) => {
 
-          sessionStorage.setItem("auth", JSON.stringify(res.data));
+          sessionStorage.setItem("auth", JSON.stringify(res.data))
           setUserConnected(res.data);
           setUserLoading(true);
-
+          navigate("/");
+          
           setLogin((prevState) => ({
           ...prevState,
           firstName: "",
@@ -98,7 +100,6 @@ function Register() {
           password_confirm: "",
         }));
 
-        navigate("/welcome");
       })
       .catch((error) => {
         console.log("error : ", error.message);

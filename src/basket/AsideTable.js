@@ -1,9 +1,9 @@
 import React ,{useState,useEffect,useContext} from 'react'
-import {MdOutlineDeleteOutline} from "react-icons/md"
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox"
 import axios from 'axios'
-import { BasketUserContext,UserContext } from '../Context';
+import { BasketUserContext,UserContext } from '../Context'
+import DialogBasket from './DialogBasket'
 
 function AsideTable() {
 
@@ -88,10 +88,9 @@ function AsideTable() {
                         alt="Miniature"
                         className="block w-[6rem] h-[6rem] "
                       />
-                      <div className="text-orange-500 hover:cursor-pointer max-w-[12rem] hover:rounded-lg mb-3 hover:bg-orange-200 font-semibold flex items-center justify-center">
-                        <MdOutlineDeleteOutline size="24px" />
-                        <div className="uppercase px-3 py-2  ">supprimer</div>
-                      </div>
+                     
+                      <DialogBasket basket={item}/>
+
                     </td>
                     <td className=" text-blue-400">{item.article.name}</td>
                     <td> {item.article.prix},00 Dhs </td>
